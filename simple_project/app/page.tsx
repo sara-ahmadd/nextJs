@@ -1,14 +1,12 @@
-import Image from "next/image";
 import { Inter } from "next/font/google";
-import styles from "./page.module.css";
 
 const inter = Inter({ subsets: ["latin"] });
 
 export default function Home() {
   return (
-    <main className={styles.main}>
+    <main className="px-12 py-3 ">
       <div>
-        <h1>Hi</h1>
+        <h1 className="text-2xl font-bold">Search now🚀</h1>
       </div>
     </main>
   );
