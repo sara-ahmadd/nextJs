@@ -15,23 +15,37 @@ export type SearchResult = {
   pageid: number;
   pageimage: string;
   terms?: {};
-  thumbnail: {
+  thumbnail?: {
     source: string;
     width: number;
     height: number;
   };
   title: string;
 };
+
+export type Result = {
+  query?: {
+    pages?: SearchResult[];
+  };
+};
+
+export async function generateMetadata({ params: { search } }: Params) {
+  return {
+    title: `${search.replaceAll("%20", " ")}` ?? "Unknown",
+  };
+}
+
 export default async function SearchText({ params: { search } }: Params) {
-  const res = await getWikiResults(search);
+  const res: Promise<Result> = await getWikiResults(search);
   const results = await res;
-  const data: SearchResult[] = results.query.pages;
-  const resArray = Object.values(data);
+  const data: SearchResult[] | undefined = Object.values(
+    results.query?.pages ?? {}
+  );
 
   return (
     <div className="px-12 py-3">
-      {resArray &&
-        resArray.map((i) => (
+      {data?.length > 0 ? (
+        data.map((i) => (
           <div
             key={i.pageid}
             className="flex justify-start gap-2 pt-3 items-start"
@@ -56,7 +70,12 @@ export default async function SearchText({ params: { search } }: Params) {
               <p>{i.extract}</p>
             </div>
           </div>
-        ))}
+        ))
+      ) : (
+        <div className="px-12 py-3">
+          <h1 className="text-4xl font-bold">{`${search}`} Is Not Found</h1>
+        </div>
+      )}
     </div>
   );
 }
