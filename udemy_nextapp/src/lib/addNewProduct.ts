@@ -1,6 +1,4 @@
-import { ProductType } from "./getAllProducts";
-
-const baseURL = "http://localhost:3000/api/products";
+import { ProductType, baseURL } from "./getAllProducts";
 
 export const addNewProduct = async (product: ProductType) => {
   const data = await fetch(baseURL, {

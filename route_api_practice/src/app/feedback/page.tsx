@@ -26,8 +26,8 @@ export default function Form() {
       headers: { Content: "Application/json" },
       body: JSON.stringify(form),
     }).then((res) => res);
-    router.push("/thanks");
-   
+    router.push("/feedback/thanks");
+
     setFrom(initState);
   };
 

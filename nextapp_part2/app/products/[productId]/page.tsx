@@ -1,4 +1,5 @@
-import { ProductType } from "@/lib/getAllProducts";
+import DeleteProduct from "@/app/components/DeleteProduct";
+import { ProductType, getAllProducts } from "@/lib/getAllProducts";
 import { getProduct } from "@/lib/getProdut";
 import Image from "next/image";
 import Link from "next/link";
@@ -11,29 +12,41 @@ export default async function Product({
   params: { productId: string };
 }) {
   const { productId } = params;
-  const data: Promise<ProductType> = getProduct(productId.toString());
+  const data: Promise<ProductType> = await getProduct(productId);
   const p = await data;
   if (!p) notFound();
   return (
-    <div className="w-full h-screen flex flex-col justify-center items-center">
+    <div className="w-screen h-screen flex flex-col justify-center items-center p-0">
       <Link
         href={"/products"}
-        className="p-5 w-44 h-20 hover:text-white hover:bg-red-500 transition-all border-red-500 rounded-md border-2 text-2xl font-semibold"
+        className="p-5 w-44 text-center h-20 hover:text-white hover:bg-red-500 transition-all border-red-500 rounded-md border-2 text-2xl font-semibold"
       >
         Products
       </Link>
-      <div className="p-4 flex flex-col justify-between items-center w-2/5 h-2/5">
+      <div className="p-4 flex flex-col justify-between items-center w-full h-fit">
         <h1 className="text-2xl font-bold text-red-500 py-3">{p.title}</h1>
         <Image
-          src={p.category?.image}
+          src={p.image}
           width={300}
           height={300}
           className="rounded-md"
           alt={p.title}
         />
-        <p className="text-2xl font-bold ">Category :{p.category?.name}</p>
+        <p className="text-2xl font-bold ">Category :{p.category}</p>
         <p className="text-2xl font-bold ">Price : ${p.price}</p>
       </div>
+      <Link
+        href={`/products/delete/${p._id}`}
+        className="p-5 w-44 text-center h-20 hover:text-white hover:bg-red-500 transition-all border-red-500 rounded-md border-2 text-2xl font-semibold"
+      >
+        Delete
+      </Link>
     </div>
   );
+}
+
+export async function generateStaticParams() {
+  const data: Promise<ProductType[]> = await getAllProducts();
+  const products = await data;
+  return products.map((p) => ({ productId: p._id }));
 }

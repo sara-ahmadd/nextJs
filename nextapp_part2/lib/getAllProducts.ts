@@ -1,25 +1,19 @@
-export const baseURL = "https://api.escuelajs.co/api/v1/products";
+const baseURL = "http://localhost:3000/api/products";
 
 export type ProductType = {
-  id: number;
   title: string;
   price: number;
   description: string;
-  category: {
-    id: number;
-    name: string;
-    image: string;
-    creationAt?: string;
-    updatedAt?: string;
-  };
-  images: string[];
-  creationAt?: string;
-  updatedAt?: string;
+  _id?: string;
+  image: string;
+  category: string;
 };
 
 export const getAllProducts = async () => {
-  const data = await fetch(baseURL);
-  if (!data.ok) throw new Error("failed to fetch data");
-  const res = data.json();
-  return res;
+  const data = await fetch(baseURL, {
+    method: "GET",
+    cache: "no-store",
+  });
+  const res = await data.json();
+  return res.data;
 };
