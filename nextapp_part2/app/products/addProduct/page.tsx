@@ -1,6 +1,7 @@
 "use client";
 import React, { ChangeEvent, FormEvent, useState } from "react";
 import { useRouter } from "next/navigation";
+import { addNewProduct } from "@/lib/addNewProduct";
 
 const initState = {
   title: "",
@@ -19,19 +20,10 @@ function Feedback() {
       [e.target.id]: e.target.value,
     });
   };
+
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
-    await fetch("http://localhost:3000/api/products", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(form),
-    })
-      .then(() => {
-        setFrom(initState);
-      })
-      .then(() => {
-        router.push("/products");
-      });
+    await addNewProduct(form).then((res) => res && router.push("/products"));
   };
   return (
     <form

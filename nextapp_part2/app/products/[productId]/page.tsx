@@ -1,19 +1,20 @@
 import DeleteProduct from "@/app/components/DeleteProduct";
 import { ProductType, getAllProducts } from "@/lib/getAllProducts";
 import { getProduct } from "@/lib/getProdut";
+import mongoose from "mongoose";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import React from "react";
+import Product from "./../../../models/product";
 
-export default async function Product({
+export default async function ProductDetails({
   params,
 }: {
   params: { productId: string };
 }) {
   const { productId } = params;
-  const data: Promise<ProductType> = await getProduct(productId);
-  const p = await data;
+  const p = await Product.findById(productId);
   if (!p) notFound();
   return (
     <div className="w-screen h-screen flex flex-col justify-center items-center p-0">
@@ -27,9 +28,9 @@ export default async function Product({
         <h1 className="text-2xl font-bold text-red-500 py-3">{p.title}</h1>
         <Image
           src={p.image}
-          width={300}
-          height={300}
-          className="rounded-md"
+          width={200}
+          height={200}
+          className="rounded-md w-auto h-auto"
           alt={p.title}
         />
         <p className="text-2xl font-bold ">Category :{p.category}</p>

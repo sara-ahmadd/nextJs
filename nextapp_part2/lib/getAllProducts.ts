@@ -1,4 +1,4 @@
-const baseURL = "http://localhost:3000/api/products";
+import { baseURL } from "./url";
 
 export type ProductType = {
   title: string;
@@ -10,10 +10,14 @@ export type ProductType = {
 };
 
 export const getAllProducts = async () => {
-  const data = await fetch(baseURL, {
+  const data = await fetch(`${baseURL}/api/products` as string, {
     method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
     cache: "no-store",
   });
   const res = await data.json();
+
   return res.data;
 };

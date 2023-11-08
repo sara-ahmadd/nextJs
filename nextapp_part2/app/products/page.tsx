@@ -38,6 +38,8 @@ export default async function Products() {
                   width={200}
                   height={200}
                   alt={p.title}
+                  className="w-auto h-56"
+                  priority={true}
                 />
                 <p className="text-1xl font-bold ">Category :{p.category}</p>
                 <p className="text-1xl font-bold ">Price : ${p.price}</p>
